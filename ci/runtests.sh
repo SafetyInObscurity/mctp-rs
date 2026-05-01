@@ -3,7 +3,7 @@
 set -v
 set -e
 
-export CARGO_TARGET_DIR=target/ci
+export CARGO_TARGET_DIR="$PWD/target/ci"
 
 rustup target add thumbv7em-none-eabihf
 rustup component add rustfmt clippy
@@ -27,15 +27,13 @@ cargo test
 NOSTD_CRATES="mctp pldm pldm-fw pldm-platform pldm-file"
 for c in $NOSTD_CRATES; do
     (
-    cd "$c"
-    cargo build --target thumbv7em-none-eabihf --no-default-features
+    cargo build -p $c --target thumbv7em-none-eabihf --no-default-features
     )
 done
 ALLOC_CRATES="pldm pldm-platform pldm-file"
 for c in $ALLOC_CRATES; do
     (
-    cd "$c"
-    cargo build --target thumbv7em-none-eabihf --no-default-features --features alloc
+    cargo build -p $c --target thumbv7em-none-eabihf --no-default-features --features alloc
     )
 done
 
