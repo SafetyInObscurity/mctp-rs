@@ -8,6 +8,10 @@
 #![forbid(unsafe_code)]
 // #![warn(missing_docs)]
 
+// collapsible_match lint suggests moving `if` statements into the parent
+// `match` arms, but that makes code intent less clear.
+#![allow(clippy::collapsible_match)]
+
 use core::fmt;
 use log::debug;
 
