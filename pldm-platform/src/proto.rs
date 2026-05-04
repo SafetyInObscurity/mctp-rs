@@ -431,7 +431,7 @@ impl<T: FromPrimitive + Debug> StateDebug<T> {
 impl<T: FromPrimitive + Debug> Debug for StateDebug<T> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         if let Some(v) = T::from_u8(self.state) {
-            write!(f, "{} {:?}", self.state, &v)
+            write!(f, "{} {:?}", self.state, v)
         } else {
             write!(f, "{} (unrecognised state)", self.state)
         }
