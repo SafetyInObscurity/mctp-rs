@@ -22,8 +22,6 @@ jobs:
           - rust_version: 1.85
             no_clippy: yes
 
-          - rust_version: nightly
-
     runs-on: ubuntu-latest
 
     steps:
