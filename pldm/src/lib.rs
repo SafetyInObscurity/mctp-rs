@@ -60,7 +60,7 @@ impl core::fmt::Display for PldmError {
             Self::InvalidArgument => write!(f, "Invalid Argument"),
             Self::NoSpace => write!(f, "Insufficient buffer space available"),
             Self::CompletionCode(c) => {
-                write!(f, "Error completion code {c:#02x} received")
+                write!(f, "Error completion code 0x{c:02x} received")
             }
         }
     }
