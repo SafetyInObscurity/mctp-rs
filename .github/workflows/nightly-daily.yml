@@ -1,0 +1,45 @@
+# Run CI with Rust nightly builds to notice breakage early.
+
+name: nightly-daily
+on:
+  schedule:
+  - cron: "8 20 * * *"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+          - rust_version: nightly
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Rust files
+        uses: actions/cache@v4
+        with:
+          # target/ci isn't cached since it will be expected to change every day
+          path: |
+            ~/.cargo/
+          # Save a unique cache each time
+          # (https://github.com/actions/cache/blob/main/tips-and-workarounds.md#update-a-cache)
+          key: rust-${{ matrix.rust_version }}-${{ github.run_id }}
+          # Load from the most recent match
+          restore-keys: |
+            rust-${{ matrix.rust_version }}
+
+      - name: Rustup ${{ matrix.rust_version }}
+        run: |
+          rustup update ${{ matrix.rust_version }}
+          rustup override set ${{ matrix.rust_version }}
+
+      - name: Build and test ${{ matrix.rust_version }}
+        env:
+          # Older clippy has some unwanted lints, ignore them.
+          NO_CLIPPY: ${{ matrix.no_clippy }}
+        run: ./ci/runtests.sh
