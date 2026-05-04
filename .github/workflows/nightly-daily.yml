@@ -13,6 +13,7 @@ jobs:
   ci:
     strategy:
       matrix:
+        include:
           - rust_version: nightly
 
     runs-on: ubuntu-latest
